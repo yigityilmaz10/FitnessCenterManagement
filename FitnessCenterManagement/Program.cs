@@ -1,4 +1,6 @@
-using FitnessCenterManagement.Data;
+// Dosya: FitnessCenterManagement/Program.cs (GÜNCEL HALİ)
+
+using FitnessCenterManagement.Data; // SeedData ve DbContext için
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,14 +19,14 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
 
-    // Şifre kurallarını gevşetiyoruz
+    // Şifre kurallarını gevşetiyoruz (Ödev için 3 karakter ve basitleştirilmiş)
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 3;
 })
-.AddRoles<IdentityRole>()
+.AddRoles<IdentityRole>() // ⬅️ 1. DEĞİŞİKLİK: Rol Yönetimini etkinleştirir
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // -------------------- MVC -----------------------------
@@ -32,6 +34,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+
+// ⬇️ 2. DEĞİŞİKLİK: Seed Data (Rol ve Admin Kullanıcı) Başlatma
+using (var scope = app.Services.CreateScope())
+{
+    // SeedData.Initialize metodu çağrılıyor. 
+    // Bu metod, Admin ve Member rollerini ve Admin kullanıcısını oluşturacak.
+    await SeedData.Initialize(scope);
+}
+// ⬆️ Seed Data Bloğu Sonu
 
 // -------------------- PIPELINE ------------------------
 if (app.Environment.IsDevelopment())
@@ -57,14 +68,5 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
-
-// -------------------- SEED ROLES & ADMIN USER ------------------------
-using (var scope = app.Services.CreateScope())
-{
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
-    await SeedData.Initialize(roleManager, userManager);
-}
 
 app.Run();

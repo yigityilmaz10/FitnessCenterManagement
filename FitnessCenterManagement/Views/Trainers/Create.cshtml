@@ -1,0 +1,55 @@
+﻿@model FitnessCenterManagement.Models.Trainer
+
+@{
+    ViewData["Title"] = "Yeni Antrenör Ekle";
+}
+
+<div class="container mt-4">
+    <h1>Yeni Antrenör Tanımla</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="FullName" class="control-label"></label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Expertise" class="control-label"></label>
+                    {{-- Antrenörün uzmanlık alanları (Ödev gereksinimi) --}}
+                    <input asp-for="Expertise" class="form-control" placeholder="Örn: Kas geliştirme, Yoga, Kilo verme" />
+                    <span asp-validation-for="Expertise" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="AvailableHours" class="control-label"></label>
+                    {{-- Şimdilik string tuttuk. İleride detaylı takvim sistemi için burayı düzenleyebiliriz. --}}
+                    <input asp-for="AvailableHours" class="form-control" placeholder="Örn: Hafta içi 09:00 - 18:00" />
+                    <span asp-validation-for="AvailableHours" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="GymId" class="control-label">Çalıştığı Spor Salonu</label>
+                    {{-- SelectList ile ViewData'dan gelen salonları dropdown olarak gösterir --}}
+                    <select asp-for="GymId" class="form-control" asp-items="ViewBag.GymId"></select>
+                    <span asp-validation-for="GymId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <input type="submit" value="Kaydet" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

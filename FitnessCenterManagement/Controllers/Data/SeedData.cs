@@ -1,43 +1,61 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿// Dosya: FitnessCenterManagement/Controllers/Data/SeedData.cs
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace FitnessCenterManagement.Data
 {
     public static class SeedData
     {
-        public static async Task Initialize(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        // Ödev gereksinimi: Admin E-posta ve Şifre
+        private const string AdminEmail = "ogrencinumarasi@sakarya.edu.tr";
+        private const string AdminPassword = "sau";
+        private const string AdminRole = "Admin";
+        private const string MemberRole = "Member";
+
+        public static async Task Initialize(IServiceScope serviceScope)
         {
-            // 1) ROLLERİ OLUŞTUR
-            if (!await roleManager.RoleExistsAsync("Admin"))
-                await roleManager.CreateAsync(new IdentityRole("Admin"));
+            var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            if (!await roleManager.RoleExistsAsync("Member"))
-                await roleManager.CreateAsync(new IdentityRole("Member"));
+            // 1. Rollere Ekleme (Roles Seeding)
+            await EnsureRole(roleManager, AdminRole);
+            await EnsureRole(roleManager, MemberRole);
 
-            // 2) ADMIN KULLANICIYI OLUŞTUR
-            var adminEmail = "b231210069@sakarya.edu.tr";
-            var adminPassword = "sau";
+            // 2. Admin Kullanıcı Ekleme (Admin User Seeding)
+            await EnsureAdminUser(userManager, AdminRole);
+        }
 
-            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+        private static async Task EnsureRole(RoleManager<IdentityRole> roleManager, string roleName)
+        {
+            if (await roleManager.FindByNameAsync(roleName) == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+        }
+
+        private static async Task EnsureAdminUser(UserManager<IdentityUser> userManager, string roleName)
+        {
+            var adminUser = await userManager.FindByEmailAsync(AdminEmail);
 
             if (adminUser == null)
             {
                 adminUser = new IdentityUser
                 {
-                    UserName = adminEmail,
-                    Email = adminEmail,
-                    EmailConfirmed = true
+                    UserName = AdminEmail,
+                    Email = AdminEmail,
+                    EmailConfirmed = true // Email onaylı sayıyoruz
                 };
 
-                var result = await userManager.CreateAsync(adminUser, adminPassword);
+                // Admin kullanıcısını oluştur ve şifresini ata
+                var result = await userManager.CreateAsync(adminUser, AdminPassword);
 
-                if (!result.Succeeded)
-                    return; // kullanıcı zaten varsa çakışma engellenir
-            }
-
-            // 3) ADMIN KULLANICIYI ADMIN ROLÜNE EKLE
-            if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
-            {
-                await userManager.AddToRoleAsync(adminUser, "Admin");
+                if (result.Succeeded)
+                {
+                    // Kullanıcıyı Admin rolüne ata
+                    await userManager.AddToRoleAsync(adminUser, roleName);
+                }
             }
         }
     }

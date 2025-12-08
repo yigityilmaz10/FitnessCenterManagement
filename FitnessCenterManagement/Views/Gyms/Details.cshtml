@@ -1,0 +1,40 @@
+﻿@model FitnessCenterManagement.Models.Gym
+
+@{
+    ViewData["Title"] = "Salon Detayları";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-3">Spor Salonu Detayları</h1>
+    <hr />
+
+    <div>
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.WorkingHours)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.WorkingHours)
+            </dd>
+        </dl>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Düzenle</a> |
+        <a asp-action="Index" class="btn btn-secondary">Listeye Geri Dön</a>
+    </div>
+</div>
