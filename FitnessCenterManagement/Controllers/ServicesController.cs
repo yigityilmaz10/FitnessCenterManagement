@@ -136,7 +136,7 @@ namespace FitnessCenterManagement.Controllers
         }
 
         // GET: Services/Delete/5
-        // Silme onay sayfasını gösterir (DELETE)
+        // Silme onay sayfasını gösterir
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

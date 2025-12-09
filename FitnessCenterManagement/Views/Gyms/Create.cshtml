@@ -10,13 +10,13 @@
     <div class="row">
         <div class="col-md-6">
             <form asp-action="Create">
-                {{-- Bu etiket, Model'deki hataları toplu gösterir --}}
+                {{-- Tüm Model hatalarını göstermek için kritik alan --}}
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="form-group mb-3">
                     <label asp-for="Name" class="control-label"></label>
                     <input asp-for="Name" class="form-control" />
-                    {{-- İstemci tarafı doğrulama mesajını gösterir --}}
+                    {{-- [Required] hatasını göstermek için kritik alan --}}
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
@@ -41,8 +41,8 @@
     </div>
 </div>
 
+@* 🔥 ÇOK KRİTİK KISIM: Bu formdaki doğrulama scriptlerinin yüklenmesini sağlar. *@
 @section Scripts {
-        {{-- Client-side Validation için gerekli partial dosyası. --}}
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

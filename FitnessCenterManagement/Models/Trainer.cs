@@ -10,7 +10,7 @@ namespace FitnessCenterManagement.Models
         [Required]
         public string FullName { get; set; }
 
-        public string Expertise { get; set; } // kas geliştirme, yoga vb.
+        public string Expertise { get; set; } //yoga vb...
 
         public string AvailableHours { get; set; }
 
