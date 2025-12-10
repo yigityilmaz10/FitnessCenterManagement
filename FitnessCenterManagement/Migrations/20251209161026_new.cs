@@ -7,7 +7,7 @@ namespace FitnessCenterManagement.Migrations
     /// <inheritdoc />
     public partial class @new : Migration
     {
-        /// <inheritdoc />
+        /// <inheritdoc />.
         protected override void Up(MigrationBuilder migrationBuilder)
         {
 

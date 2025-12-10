@@ -93,7 +93,7 @@ namespace FitnessCenterManagement.Controllers
                 return NotFound();
             }
 
-            // Dropdown için Gym listesini tekrar yükle, mevcut GymId'yi seçili olarak işaretle
+            // Dropdown için Gym listesini tekrar yükle, mevcut GymId'yi seçili olarak işaretle.
             ViewData["GymId"] = new SelectList(_context.Gyms, "Id", "Name", service.GymId);
             return View(service);
         }
