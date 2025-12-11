@@ -1,9 +1,11 @@
-﻿using FitnessCenterManagement.Models;
+﻿// Dosya: Controllers/Data/ApplicationDbContext.cs
+using FitnessCenterManagement.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitnessCenterManagement.Data
 {
+    // IdentityDbContext, Kimlik/Kullanıcı yönetimi için gerekli tabloları otomatik ekler.
     public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -11,6 +13,7 @@ namespace FitnessCenterManagement.Data
         {
         }
 
+        // Tüm varlıklar (Entityler)
         public DbSet<Gym> Gyms { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
@@ -20,21 +23,21 @@ namespace FitnessCenterManagement.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Appointment -> Trainer (Restrict to avoid cascade cycle)
+            // Randevu -> Antrenör İlişkisi (DeleteBehavior.Restrict, veri bütünlüğü için kritik)
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.Trainer)
                 .WithMany(t => t.Appointments)
                 .HasForeignKey(a => a.TrainerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Appointment -> Service (Restrict)
+            // Randevu -> Hizmet İlişkisi
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.Service)
                 .WithMany()
                 .HasForeignKey(a => a.ServiceId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Optional: decimal precision fix for Price
+            // Decimal Hassasiyeti
             modelBuilder.Entity<Service>()
                 .Property(s => s.Price)
                 .HasPrecision(18, 2);

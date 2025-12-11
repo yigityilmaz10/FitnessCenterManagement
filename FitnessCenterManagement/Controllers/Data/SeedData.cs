@@ -1,7 +1,6 @@
-﻿// Dosya: FitnessCenterManagement/Controllers/Data/SeedData.cs
-
+﻿// Dosya: Controllers/Data/SeedData.cs
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
 namespace FitnessCenterManagement.Data
@@ -19,11 +18,11 @@ namespace FitnessCenterManagement.Data
             var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
             var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            // 1. Rollere Ekleme (Roles Seeding)
+            // 1. Rolleri Oluşturma
             await EnsureRole(roleManager, AdminRole);
             await EnsureRole(roleManager, MemberRole);
 
-            // 2. Admin Kullanıcı Ekleme (Admin User Seeding)
+            // 2. Admin Kullanıcıyı Oluşturma ve Role Atama
             await EnsureAdminUser(userManager, AdminRole);
         }
 
@@ -45,15 +44,13 @@ namespace FitnessCenterManagement.Data
                 {
                     UserName = AdminEmail,
                     Email = AdminEmail,
-                    EmailConfirmed = true // Email onaylı sayıyoruz
+                    EmailConfirmed = true
                 };
 
-                // Admin kullanıcısını oluştur ve şifresini ata
                 var result = await userManager.CreateAsync(adminUser, AdminPassword);
 
                 if (result.Succeeded)
                 {
-                    // Kullanıcıyı Admin rolüne ata
                     await userManager.AddToRoleAsync(adminUser, roleName);
                 }
             }

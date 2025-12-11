@@ -1,6 +1,6 @@
 ﻿namespace FitnessCenterManagement.Models
 {
-    public class Appointment
+    public class ServiceType
     {
     }
 }

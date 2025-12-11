@@ -1,12 +1,12 @@
-// Dosya: FitnessCenterManagement/Program.cs (GÜNCEL HALİ)
-
-using FitnessCenterManagement.Data; // SeedData ve DbContext için
+// Dosya: Program.cs
+using FitnessCenterManagement.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // -------------------- DATABASE -----------------------
+// appsettings.json dosyasından bağlantı dizesini okur.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -19,14 +19,14 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
 
-    // Şifre kurallarını gevşetiyoruz (Ödev için 3 karakter ve basitleştirilmiş)
+    // Şifre kurallarını gevşetiyoruz (Ödev için kolaylık)
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 3;
 })
-.AddRoles<IdentityRole>() // ⬅️ 1. DEĞİŞİKLİK: Rol Yönetimini etkinleştirir
+.AddRoles<IdentityRole>() // 🔥 Rol Yönetimini etkinleştirir
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // -------------------- MVC -----------------------------
@@ -35,18 +35,18 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// ⬇️ 2. DEĞİŞİKLİK: Seed Data (Rol ve Admin Kullanıcı) Başlatma
+// ⬇️ SEED DATA VE ROL BAŞLATMA KRİTİK ALAN
 using (var scope = app.Services.CreateScope())
 {
-    // SeedData.Initialize metodu çağrılıyor. 
-    // Bu metod, Admin ve Member rollerini ve Admin kullanıcısını oluşturacak.
+    // Uygulama başlarken Admin rolünü ve kullanıcıyı ekler.
     await SeedData.Initialize(scope);
 }
-// ⬆️ Seed Data Bloğu Sonu
+// ⬆️ SEED DATA BİTİŞ
 
 // -------------------- PIPELINE ------------------------
 if (app.Environment.IsDevelopment())
 {
+    // Geliştirme modunda detaylı hata ekranını gösterir (Hata tespiti için önemlidir!)
     app.UseDeveloperExceptionPage();
 }
 else
@@ -61,7 +61,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthorization(); // Yetkilendirme Kontrollerini etkinleştirir
 
 app.MapControllerRoute(
     name: "default",
