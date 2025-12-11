@@ -9,7 +9,7 @@ namespace FitnessCenterManagement.Models
         [Required]
         public string Name { get; set; }
 
-        public int Duration { get; set; } // dk
+        public int Duration { get; set; } // dk.
 
         public decimal Price { get; set; }
 

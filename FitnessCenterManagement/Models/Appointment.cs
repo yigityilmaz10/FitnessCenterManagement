@@ -14,7 +14,7 @@ namespace FitnessCenterManagement.Models
         public Service Service { get; set; }
 
         [Required]
-        public string MemberId { get; set; }  // Identity User ID
+        public string MemberId { get; set; }  // Identity User ID.
 
         public DateTime AppointmentDate { get; set; }
 
