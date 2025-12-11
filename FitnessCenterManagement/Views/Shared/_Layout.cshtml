@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,15 +23,41 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
                         </li>
+                        
+                        @* SADECE GİRİŞ YAPILDIĞINDA GÖRÜNEN LİNKLER *@
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index">Randevularım</a>
+                            </li>
+                        }
+
+                        @* SADECE ADMIN ROLÜ İÇİN GEREKLİ LİNKLER (ROL BAZLI YETKİLENDİRME) *@
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin Yönetimi
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Gyms" asp-action="Index">Spor Salonları</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Services" asp-action="Index">Hizmetler</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Trainers" asp-action="Index">Antrenörler</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Appointments" asp-action="Index">Tüm Randevular (Yönetim)</a></li>
+                                </ul>
+                            </li>
+                        }
+                        
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Gizlilik</a>
                         </li>
                     </ul>
 
-                    <!-- 🔥 Login / Register / Logout buraya eklendi -->
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -42,7 +72,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - FitnessCenterManagement - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - FitnessCenterManagement - <a asp-area="" asp-controller="Home" asp-action="Privacy">Gizlilik</a>
         </div>
     </footer>
 

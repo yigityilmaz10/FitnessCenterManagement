@@ -1,10 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace FitnessCenterManagement.Models
+﻿namespace FitnessCenterManagement.Models
 {
     public class Appointment
     {
+<<<<<<< HEAD
         public int Id { get; set; }
 
         public int TrainerId { get; set; }
@@ -19,5 +17,7 @@ namespace FitnessCenterManagement.Models
         public DateTime AppointmentDate { get; set; }
 
         public bool IsApproved { get; set; }
+=======
+>>>>>>> a94b8cc19ae3069b7555901b1d76b947f79d028e
     }
 }

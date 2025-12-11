@@ -8,10 +8,16 @@
         <li class="nav-item">
             <span class="nav-link text-dark">Merhaba @UserManager.GetUserName(User)!</span>
         </li>
+
         <li class="nav-item">
-            <form method="post" asp-area="Identity" asp-page="/Account/Logout">
-                <button type="submit" class="nav-link btn btn-link text-dark">Çıkış</button>
+            <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" method="post" class="d-none">
+                @Html.AntiForgeryToken()
             </form>
+
+            <button type="button" class="nav-link btn btn-link text-dark"
+                    onclick="document.getElementById('logoutForm').submit();">
+                Çıkış
+            </button>
         </li>
     }
     else
