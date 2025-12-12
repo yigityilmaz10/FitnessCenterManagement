@@ -18,7 +18,7 @@ namespace FitnessCenterManagement.Data
             var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
             var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            // 1. Rolleri Oluşturma
+            // 1. Rolleri Oluşturma.
             await EnsureRole(roleManager, AdminRole);
             await EnsureRole(roleManager, MemberRole);
 
