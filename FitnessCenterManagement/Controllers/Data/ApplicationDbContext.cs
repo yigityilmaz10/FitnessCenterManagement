@@ -13,7 +13,7 @@ namespace FitnessCenterManagement.Data
         {
         }
 
-        // Tüm varlıklar (Entityler)
+        // Tüm varlıklar (Entityler).
         public DbSet<Gym> Gyms { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
