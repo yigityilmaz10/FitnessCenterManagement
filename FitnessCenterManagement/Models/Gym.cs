@@ -2,15 +2,13 @@
 
 namespace FitnessCenterManagement.Models
 {
-    public class Service
+    public class Gym
     {
         public int Id { get; set; }
 
         [Required]
         public string Name { get; set; }
 
-        public int DurationMinutes { get; set; }
-
-        public decimal Price { get; set; }
+        public string WorkingHours { get; set; }
     }
 }

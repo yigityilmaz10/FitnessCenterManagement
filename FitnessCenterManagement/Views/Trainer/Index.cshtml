@@ -1,0 +1,26 @@
+﻿@model IEnumerable<FitnessCenterManagement.Models.Trainer>
+
+<h2>Trainers</h2>
+
+<a class="btn btn-primary" asp-action="Create">Yeni Antrenör</a>
+
+<table class="table mt-3">
+    <tr>
+        <th>Ad Soyad</th>
+        <th>Uzmanlık</th>
+        <th>Müsait Saatler</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.FullName</td>
+            <td>@item.Specialty</td>
+            <td>@item.AvailableHours</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,36 @@
+﻿@model FitnessCenterManagement.Models.Trainer
+
+<h2>Yeni Antrenör</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <!-- Genel validation hataları -->
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <div class="form-group">
+        <label asp-for="FullName">Ad Soyad</label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-2">
+        <label asp-for="Specialty">Uzmanlık</label>
+        <input asp-for="Specialty" class="form-control" />
+        <span asp-validation-for="Specialty" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-2">
+        <label asp-for="AvailableHours">Müsait Saatler</label>
+        <input asp-for="AvailableHours" class="form-control" />
+        <span asp-validation-for="AvailableHours" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Kaydet</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

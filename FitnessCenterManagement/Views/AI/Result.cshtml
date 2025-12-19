@@ -1,0 +1,16 @@
+﻿@model FitnessCenterManagement.Models.AIExerciseRequest
+
+<h2>AI Önerisi</h2>
+
+<p><strong>Boy:</strong> @Model.Height cm</p>
+<p><strong>Kilo:</strong> @Model.Weight kg</p>
+<p><strong>Hedef:</strong> @Model.Goal</p>
+
+<hr />
+
+<h4>Önerilen Program</h4>
+<p class="alert alert-info">
+    @ViewBag.Recommendation
+</p>
+
+<a asp-action="Index" class="btn btn-primary">Yeni Öneri Al</a>

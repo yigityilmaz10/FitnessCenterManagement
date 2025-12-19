@@ -1,0 +1,15 @@
+﻿@model FitnessCenterManagement.Models.Appointment
+
+<h2>Randevu Sil</h2>
+
+<p>
+    <strong>@Model.Trainer.FullName</strong> -
+    @Model.AppointmentDate tarihli randevuyu silmek istiyor musun?
+</p>
+
+<form asp-action="Delete">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <button class="btn btn-danger">Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>

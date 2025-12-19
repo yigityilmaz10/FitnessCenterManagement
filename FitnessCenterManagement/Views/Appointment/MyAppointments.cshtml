@@ -1,0 +1,33 @@
+﻿@model IEnumerable<FitnessCenterManagement.Models.Appointment>
+
+<h2>Randevularım</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Yeni Randevu</a>
+
+<table class="table table-striped">
+    <tr>
+        <th>Antrenör</th>
+        <th>Hizmet</th>
+        <th>Tarih</th>
+        <th>Durum</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Trainer.FullName</td>
+            <td>@item.Service.Name</td>
+            <td>@item.AppointmentDate</td>
+            <td>
+                @if (item.IsApproved)
+                {
+                    <span class="text-success">Onaylandı</span>
+                }
+                else
+                {
+                    <span class="text-warning">Beklemede</span>
+                }
+            </td>
+        </tr>
+    }
+</table>

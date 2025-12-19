@@ -1,0 +1,11 @@
+﻿@model FitnessCenterManagement.Models.Trainer
+
+<h2>Sil</h2>
+
+<p>@Model.FullName antrenörünü silmek istediğine emin misin?</p>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button class="btn btn-danger">Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>

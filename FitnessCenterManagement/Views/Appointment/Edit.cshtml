@@ -1,0 +1,30 @@
+﻿@model FitnessCenterManagement.Models.Appointment
+
+<h2>Randevu Düzenle</h2>
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label>Antrenör</label>
+        <select asp-for="TrainerId" asp-items="ViewBag.Trainers" class="form-control"></select>
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Hizmet</label>
+        <select asp-for="ServiceId" asp-items="ViewBag.Services" class="form-control"></select>
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Tarih & Saat</label>
+        <input asp-for="AppointmentDate" type="datetime-local" class="form-control" />
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Onaylandı mı?</label>
+        <input asp-for="IsApproved" type="checkbox" />
+    </div>
+
+    <button class="btn btn-success mt-3">Kaydet</button>
+</form>
