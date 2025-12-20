@@ -1,8 +1,43 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Ana Sayfa";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- FULLSCREEN HERO -->
+<section class="hero">
+    <div class="hero-overlay">
+        <div class="hero-text">
+            <h1>ABİDİN FITNESS 🐱💪</h1>
+            <p>Kedilerle güçlen, disiplinle geliş</p>
+
+            <div class="hero-buttons">
+                <a asp-controller="Appointment" asp-action="Create"
+                   class="btn btn-warning btn-lg me-2">
+                    Randevu Al
+                </a>
+
+                <a asp-controller="AI" asp-action="Index"
+                   class="btn btn-outline-light btn-lg">
+                    AI Öneri Al
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FLOATING CARDS -->
+<section class="features">
+    <div class="feature-card">
+        <h5>🏋️ Profesyonel Antrenörler</h5>
+        <p>Alanında uzman eğitmenler</p>
+    </div>
+
+    <div class="feature-card">
+        <h5>🤖 AI Destekli Plan</h5>
+        <p>Yapay zekâ destekli egzersiz</p>
+    </div>
+
+    <div class="feature-card">
+        <h5>📅 Online Randevu</h5>
+        <p>Hızlı ve kolay rezervasyon</p>
+    </div>
+</section>

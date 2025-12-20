@@ -1,30 +1,79 @@
 ﻿@model FitnessCenterManagement.Models.AIExerciseRequest
+@{
+    ViewData["Title"] = "AI Egzersiz Önerisi";
+}
 
-<h2>AI Egzersiz Önerisi</h2>
+<div class="container">
 
-<form asp-action="Result" method="post">
-    @Html.AntiForgeryToken()
+    <div class="row justify-content-center">
+        <div class="col-md-7">
 
-    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            <div class="card card-soft">
+                <div class="card-header bg-dark text-white text-center fs-5">
+                    🤖 Yapay Zekâ Destekli Egzersiz Planı
+                </div>
 
-    <div class="form-group">
-        <label>Boy (cm)</label>
-        <input asp-for="Height" class="form-control" />
+                <div class="card-body p-4">
+
+                    <p class="text-muted text-center mb-4">
+                        Fiziksel bilgilerini gir, yapay zekâ senin için en uygun
+                        egzersiz planını oluştursun.
+                    </p>
+
+                    <form asp-action="Result" method="post">
+                        @Html.AntiForgeryToken()
+
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div asp-validation-summary="All"
+                                 class="alert alert-danger small"></div>
+                        }
+
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Boy (cm)</label>
+                                <input asp-for="Height"
+                                       class="form-control form-control-lg" />
+                                <span asp-validation-for="Height" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Kilo (kg)</label>
+                                <input asp-for="Weight"
+                                       class="form-control form-control-lg" />
+                                <span asp-validation-for="Weight" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- 🔥 HEDEF – DROPDOWN -->
+                        <div class="mb-4">
+                            <label class="form-label">Hedef</label>
+                            <select asp-for="Goal"
+                                    class="form-select form-select-lg">
+                                <option value="">Hedef Seçiniz</option>
+                                <option value="Kilo Vermek">Kilo Vermek</option>
+                                <option value="Kas Kazanmak">Kas Kazanmak</option>
+                                <option value="Kondisyon Artırmak">Kondisyon Artırmak</option>
+                                <option value="Esneklik Geliştirmek">Esneklik Geliştirmek</option>
+                                <option value="Genel Sağlık">Genel Sağlık</option>
+                            </select>
+                            <span asp-validation-for="Goal" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-warning btn-lg fw-semibold">
+                                ⚡ AI Öneri Oluştur
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
     </div>
 
-    <div class="form-group mt-2">
-        <label>Kilo (kg)</label>
-        <input asp-for="Weight" class="form-control" />
-    </div>
-
-    <div class="form-group mt-2">
-        <label>Hedef</label>
-        <input asp-for="Goal" class="form-control"
-               placeholder="kilo verme / kas yapma" />
-    </div>
-
-    <button class="btn btn-success mt-3">Öneri Al</button>
-</form>
+</div>
 
 @section Scripts {
     @{

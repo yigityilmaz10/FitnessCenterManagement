@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace FitnessCenterManagement.Models
 {
@@ -6,13 +7,12 @@ namespace FitnessCenterManagement.Models
     {
         public int Id { get; set; }
 
+        // 🔴 ZORUNLU ALANLAR (ID'LER)
         [Required]
         public int TrainerId { get; set; }
-        public Trainer Trainer { get; set; }
 
         [Required]
         public int ServiceId { get; set; }
-        public Service Service { get; set; }
 
         [Required]
         public string UserId { get; set; }
@@ -21,5 +21,9 @@ namespace FitnessCenterManagement.Models
         public DateTime AppointmentDate { get; set; }
 
         public bool IsApproved { get; set; }
+
+        // 🟢 NAVIGATION PROPERTY'LER (POST'TA NULL OLABİLİR)
+        public Trainer? Trainer { get; set; }
+        public Service? Service { get; set; }
     }
 }

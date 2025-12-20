@@ -1,0 +1,80 @@
+﻿@model FitnessCenterManagement.Models.Service
+@{
+    ViewData["Title"] = "Yeni Hizmet";
+}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-header bg-dark text-white text-center py-3 rounded-top-4">
+                    <h4 class="mb-0">
+                        🧾 Yeni Hizmet Ekle
+                    </h4>
+                    <small class="opacity-75">
+                        Spor salonu hizmet bilgilerini tanımlayın
+                    </small>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div asp-validation-summary="All"
+                                 class="alert alert-danger small"></div>
+                        }
+
+
+                        <!-- HİZMET ADI -->
+                        <div class="mb-4">
+                            <label asp-for="Name" class="form-label fw-semibold">
+                                Hizmet Adı
+                            </label>
+                            <input asp-for="Name"
+                                   class="form-control form-control-lg"
+                                   placeholder="Örn: Pilates, Fitness, CrossFit" />
+                            <span asp-validation-for="Name"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- FİYAT -->
+                        <div class="mb-4">
+                            <label asp-for="Price" class="form-label fw-semibold">
+                                Fiyat (₺)
+                            </label>
+                            <input asp-for="Price"
+                                   class="form-control form-control-lg"
+                                   placeholder="Örn: 750" />
+                            <span asp-validation-for="Price"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit"
+                                    class="btn btn-success btn-lg fw-semibold">
+                                ✅ Hizmeti Kaydet
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

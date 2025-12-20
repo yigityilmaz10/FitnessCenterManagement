@@ -1,20 +1,48 @@
 ﻿@model FitnessCenterManagement.Models.Trainer
 
-<h2>Düzenle</h2>
+<h2>Antrenör Düzenle</h2>
 
 <form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+
     <input type="hidden" asp-for="Id" />
+
+    <@if (!ViewData.ModelState.IsValid)
+    {
+        <div asp-validation-summary="All"
+             class="alert alert-danger small"></div>
+    }
+
+
     <div class="form-group">
-        <label>Ad Soyad</label>
+        <label asp-for="FullName">Ad Soyad</label>
         <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label>Uzmanlık</label>
-        <input asp-for="Specialty" class="form-control" />
+
+    <!-- 🔴 SPECIALTY KALKTI – SERVICE DROPDOWN -->
+    <div class="form-group mt-2">
+        <label>Uzmanlık (Hizmet)</label>
+        <select asp-for="ServiceId"
+                asp-items="ViewBag.Services"
+                class="form-control">
+        </select>
+        <span asp-validation-for="ServiceId" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label>Müsait Saatler</label>
+
+    <div class="form-group mt-2">
+        <label asp-for="AvailableHours">Müsait Saatler</label>
         <input asp-for="AvailableHours" class="form-control" />
+        <span asp-validation-for="AvailableHours" class="text-danger"></span>
     </div>
-    <button class="btn btn-primary mt-2">Güncelle</button>
+
+    <button type="submit" class="btn btn-primary mt-3">
+        Güncelle
+    </button>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

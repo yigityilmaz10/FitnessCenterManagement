@@ -23,11 +23,12 @@ namespace FitnessCenterManagement.Controllers.Api
         public async Task<IActionResult> GetAllTrainers()
         {
             var trainers = await _context.Trainers
+                .Include(t => t.Service)
                 .Select(t => new
                 {
                     t.Id,
                     t.FullName,
-                    t.Specialty,
+                    Service = t.Service.Name,
                     t.AvailableHours
                 })
                 .ToListAsync();
@@ -48,12 +49,13 @@ namespace FitnessCenterManagement.Controllers.Api
                 .ToListAsync();
 
             var availableTrainers = await _context.Trainers
+                .Include(t => t.Service)
                 .Where(t => !busyTrainerIds.Contains(t.Id))
                 .Select(t => new
                 {
                     t.Id,
                     t.FullName,
-                    t.Specialty
+                    Service = t.Service.Name
                 })
                 .ToListAsync();
 
@@ -70,6 +72,7 @@ namespace FitnessCenterManagement.Controllers.Api
             var appointments = await _context.Appointments
                 .Where(a => a.UserId == userId)
                 .Include(a => a.Trainer)
+                    .ThenInclude(t => t.Service)
                 .Include(a => a.Service)
                 .Select(a => new
                 {

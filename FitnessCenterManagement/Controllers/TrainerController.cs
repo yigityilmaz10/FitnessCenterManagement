@@ -2,6 +2,7 @@
 using FitnessCenterManagement.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitnessCenterManagement.Controllers
@@ -21,7 +22,10 @@ namespace FitnessCenterManagement.Controllers
         // =========================
         public async Task<IActionResult> Index()
         {
-            var trainers = await _context.Trainers.ToListAsync();
+            var trainers = await _context.Trainers
+                .Include(t => t.Service)
+                .ToListAsync();
+
             return View(trainers);
         }
 
@@ -30,6 +34,7 @@ namespace FitnessCenterManagement.Controllers
         // =========================
         public IActionResult Create()
         {
+            ViewBag.Services = new SelectList(_context.Services, "Id", "Name");
             return View();
         }
 
@@ -42,6 +47,7 @@ namespace FitnessCenterManagement.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Services = new SelectList(_context.Services, "Id", "Name");
                 return View(trainer);
             }
 
@@ -60,6 +66,13 @@ namespace FitnessCenterManagement.Controllers
             if (trainer == null)
                 return NotFound();
 
+            ViewBag.Services = new SelectList(
+                _context.Services,
+                "Id",
+                "Name",
+                trainer.ServiceId
+            );
+
             return View(trainer);
         }
 
@@ -74,21 +87,18 @@ namespace FitnessCenterManagement.Controllers
                 return NotFound();
 
             if (!ModelState.IsValid)
+            {
+                ViewBag.Services = new SelectList(
+                    _context.Services,
+                    "Id",
+                    "Name",
+                    trainer.ServiceId
+                );
                 return View(trainer);
+            }
 
-            try
-            {
-                _context.Update(trainer);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                bool exists = await _context.Trainers.AnyAsync(t => t.Id == trainer.Id);
-                if (!exists)
-                    return NotFound();
-                else
-                    throw;
-            }
+            _context.Update(trainer);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
@@ -98,7 +108,10 @@ namespace FitnessCenterManagement.Controllers
         // =========================
         public async Task<IActionResult> Delete(int id)
         {
-            var trainer = await _context.Trainers.FindAsync(id);
+            var trainer = await _context.Trainers
+                .Include(t => t.Service)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
             if (trainer == null)
                 return NotFound();
 

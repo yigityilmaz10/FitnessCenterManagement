@@ -9,7 +9,9 @@ namespace FitnessCenterManagement.Models
         [Required]
         public string FullName { get; set; }
 
-        public string Specialty { get; set; }
+        public int ServiceId { get; set; }
+        public Service? Service { get; set; }
+
 
         public string AvailableHours { get; set; }
 

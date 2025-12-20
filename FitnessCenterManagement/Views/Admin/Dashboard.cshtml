@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2 class="mb-4">📊 Admin Dashboard</h2>
+
+<div class="row">
+
+    <div class="col-md-3 mb-4">
+        <div class="card text-white bg-primary shadow h-100">
+            <div class="card-body text-center">
+                <h5>Antrenör Sayısı</h5>
+                <h2>@ViewBag.TrainerCount</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card text-white bg-success shadow h-100">
+            <div class="card-body text-center">
+                <h5>Hizmet Sayısı</h5>
+                <h2>@ViewBag.ServiceCount</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card text-white bg-dark shadow h-100">
+            <div class="card-body text-center">
+                <h5>Toplam Randevu</h5>
+                <h2>@ViewBag.AppointmentCount</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card text-white bg-warning shadow h-100">
+            <div class="card-body text-center">
+                <h5>Bekleyen Randevu</h5>
+                <h2>@ViewBag.PendingAppointments</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="mt-4">
+    <a asp-controller="Appointment" asp-action="Index" class="btn btn-outline-primary me-2">
+        📋 Randevuları Yönet
+    </a>
+
+    <a asp-controller="Trainer" asp-action="Index" class="btn btn-outline-secondary me-2">
+        🏋️ Antrenörler
+    </a>
+
+    <a asp-controller="Service" asp-action="Index" class="btn btn-outline-success">
+        🧾 Hizmetler
+    </a>
+</div>

@@ -55,7 +55,6 @@ namespace FitnessCenterManagement.Controllers
         // =========================
         public IActionResult Create()
         {
-            ViewBag.Trainers = new SelectList(_context.Trainers, "Id", "FullName");
             ViewBag.Services = new SelectList(_context.Services, "Id", "Name");
             return View();
         }
@@ -70,7 +69,8 @@ namespace FitnessCenterManagement.Controllers
             appointment.UserId = _userManager.GetUserId(User);
             appointment.IsApproved = false;
 
-            // ⛔ ÇAKIŞMA KONTROLÜ (PDF'DE ARANAN LINQ)
+            ModelState.Remove("UserId");
+
             bool conflict = await _context.Appointments.AnyAsync(a =>
                 a.TrainerId == appointment.TrainerId &&
                 a.AppointmentDate == appointment.AppointmentDate
@@ -81,7 +81,6 @@ namespace FitnessCenterManagement.Controllers
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Trainers = new SelectList(_context.Trainers, "Id", "FullName");
                 ViewBag.Services = new SelectList(_context.Services, "Id", "Name");
                 return View(appointment);
             }
@@ -93,70 +92,57 @@ namespace FitnessCenterManagement.Controllers
         }
 
         // =========================
-        // EDIT (GET)
-        // =========================
-        public async Task<IActionResult> Edit(int id)
-        {
-            var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment == null) return NotFound();
-
-            ViewBag.Trainers = new SelectList(_context.Trainers, "Id", "FullName", appointment.TrainerId);
-            ViewBag.Services = new SelectList(_context.Services, "Id", "Name", appointment.ServiceId);
-
-            return View(appointment);
-        }
-
-        // =========================
-        // EDIT (POST)
+        // ADMIN – ONAYLA
         // =========================
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Appointment appointment)
+        public async Task<IActionResult> Approve(int id)
         {
-            if (id != appointment.Id) return NotFound();
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment == null)
+                return NotFound();
 
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Trainers = new SelectList(_context.Trainers, "Id", "FullName", appointment.TrainerId);
-                ViewBag.Services = new SelectList(_context.Services, "Id", "Name", appointment.ServiceId);
-                return View(appointment);
-            }
-
-            _context.Update(appointment);
+            appointment.IsApproved = true;
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
         // =========================
-        // DELETE (GET)
+        // ADMIN – REDDET
         // =========================
-        public async Task<IActionResult> Delete(int id)
-        {
-            var appointment = await _context.Appointments
-                .Include(a => a.Trainer)
-                .Include(a => a.Service)
-                .FirstOrDefaultAsync(a => a.Id == id);
-
-            if (appointment == null) return NotFound();
-
-            return View(appointment);
-        }
-
-        // =========================
-        // DELETE (POST)
-        // =========================
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Reject(int id)
         {
             var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment == null) return NotFound();
+            if (appointment == null)
+                return NotFound();
 
             _context.Appointments.Remove(appointment);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        // =========================
+        // AJAX – HİZMETE GÖRE ANTRENÖR
+        // =========================
+        [HttpGet]
+        public async Task<IActionResult> GetTrainersByService(int serviceId)
+        {
+            var trainers = await _context.Trainers
+                .Where(t => t.ServiceId == serviceId)
+                .Select(t => new
+                {
+                    t.Id,
+                    t.FullName
+                })
+                .ToListAsync();
+
+            return Json(trainers);
         }
     }
 }

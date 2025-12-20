@@ -1,39 +1,42 @@
-﻿@model IEnumerable<FitnessCenterManagement.Models.Trainer>
+﻿@model IEnumerable<FitnessCenterManagement.Models.Service>
 @{
-    ViewData["Title"] = "Antrenörler";
+    ViewData["Title"] = "Hizmetler";
 }
 
 <div class="container">
 
-    <!-- SAYFA BAŞLIĞI + BUTON -->
+    <!-- BAŞLIK + CTA -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="page-title">🏋️ Antrenörler</h2>
+        <div>
+            <h2 class="page-title mb-0">🧾 Hizmetler</h2>
+            <small class="text-muted">
+                Spor salonunda sunulan hizmetlerin listesi
+            </small>
+        </div>
 
         <a asp-action="Create" class="btn btn-primary btn-lg">
-            ➕ Yeni Antrenör
+            ➕ Yeni Hizmet
         </a>
     </div>
 
-    <!-- KART + TABLO -->
-    <div class="card card-soft">
+    <div class="card shadow-sm border-0">
         <div class="card-body p-0">
 
-            <table class="table table-hover mb-0 align-middle">
+            <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="ps-4">Ad Soyad</th>
-                        <th>Uzmanlık (Hizmet)</th>
-                        <th>Müsait Saatler</th>
+                        <th class="ps-4">Hizmet</th>
+                        <th>Fiyat</th>
                         <th class="text-end pe-4">İşlemler</th>
                     </tr>
                 </thead>
-                <tbody>
 
+                <tbody>
                     @if (!Model.Any())
                     {
                         <tr>
-                            <td colspan="4" class="text-center py-4 text-muted">
-                                Henüz antrenör eklenmemiş.
+                            <td colspan="3" class="text-center py-5 text-muted">
+                                🧾 Henüz hizmet eklenmemiş
                             </td>
                         </tr>
                     }
@@ -43,22 +46,21 @@
                         {
                             <tr>
                                 <td class="ps-4 fw-semibold">
-                                    @item.FullName
+                                    @item.Name
                                 </td>
                                 <td>
-                                    <span class="badge bg-info text-dark">
-                                        @item.Service.Name
+                                    <span class="badge bg-success fs-6">
+                                        💰 @item.Price ₺
                                     </span>
                                 </td>
-                                <td>
-                                    @item.AvailableHours
-                                </td>
                                 <td class="text-end pe-4">
-                                    <a asp-action="Edit" asp-route-id="@item.Id"
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.Id"
                                        class="btn btn-sm btn-outline-secondary me-2">
                                         ✏️ Düzenle
                                     </a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id"
+                                    <a asp-action="Delete"
+                                       asp-route-id="@item.Id"
                                        class="btn btn-sm btn-outline-danger">
                                         🗑️ Sil
                                     </a>
@@ -66,8 +68,8 @@
                             </tr>
                         }
                     }
-
                 </tbody>
+
             </table>
 
         </div>

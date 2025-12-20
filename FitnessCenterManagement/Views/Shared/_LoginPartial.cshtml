@@ -2,32 +2,53 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            <span class="nav-link text-dark">Merhaba @UserManager.GetUserName(User)!</span>
-        </li>
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle fw-semibold text-warning"
+           href="#" role="button" data-bs-toggle="dropdown">
+            🐱 @User.Identity?.Name
+        </a>
 
-        <li class="nav-item">
-            <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" method="post" class="d-none">
-                @Html.AntiForgeryToken()
-            </form>
+        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow">
 
-            <button type="button" class="nav-link btn btn-link text-dark"
-                    onclick="document.getElementById('logoutForm').submit();">
-                Çıkış
-            </button>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Giriş Yap</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Kayıt Ol</a>
-        </li>
-    }
-</ul>
+            <li>
+                <span class="dropdown-item-text text-muted small">
+                    Giriş Yapıldı
+                </span>
+            </li>
 
+            <li><hr class="dropdown-divider" /></li>
+
+            <li>
+                <form asp-controller="Account"
+                      asp-action="Logout"
+                      method="post"
+                      class="d-inline">
+                    <button type="submit"
+                            class="btn btn-outline-warning btn-sm fw-semibold">
+                        🚪 Çıkış Yap
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link fw-semibold text-success"
+           asp-area="Identity"
+           asp-page="/Account/Login">
+            🔐 Giriş Yap
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link fw-semibold text-info"
+           asp-area="Identity"
+           asp-page="/Account/Register">
+            📝 Kayıt Ol
+        </a>
+    </li>
+}

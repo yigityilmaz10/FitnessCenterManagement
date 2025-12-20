@@ -20,3 +20,115 @@ html {
 body {
   margin-bottom: 60px;
 }
+body {
+    background-color: #f4f6f9;
+}
+
+.page-title {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.card-soft {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+/* HERO BACKGROUND */
+.hero {
+    height: 100vh;
+    width: 100%;
+    background-image: url('/images/abidinfitness.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+/* DARK OVERLAY */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* HERO TEXT */
+.hero-text {
+    text-align: center;
+    color: white;
+}
+
+    .hero-text h1 {
+        font-size: 4rem;
+        font-weight: 800;
+    }
+
+    .hero-text p {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+
+/* FLOATING FEATURES */
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+    padding-bottom: 60px;
+}
+
+.feature-card {
+    background: white;
+    padding: 25px;
+    width: 260px;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    text-align: center;
+}
+/* ===== NAVBAR GENEL ===== */
+.custom-navbar {
+    background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+}
+
+    /* Navbar linkleri */
+    .custom-navbar .nav-link {
+        color: #eaeaea !important;
+        transition: color 0.2s ease;
+    }
+
+        .custom-navbar .nav-link:hover {
+            color: #ffcc00 !important;
+        }
+
+    /* Brand */
+    .custom-navbar .navbar-brand {
+        color: #ffcc00 !important;
+    }
+
+/* ===== KULLANICI ALANI ===== */
+.user-badge {
+    background-color: #ffcc00;
+    color: #000;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Dropdown menu */
+.dropdown-menu-dark {
+    background-color: #1f2933;
+}
+
+/* Çıkış butonu */
+.logout-btn {
+    background-color: #dc3545;
+    border: none;
+}
+
+    .logout-btn:hover {
+        background-color: #bb2d3b;
+    }
+

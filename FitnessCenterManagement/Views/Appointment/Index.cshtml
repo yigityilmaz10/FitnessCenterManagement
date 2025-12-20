@@ -1,38 +1,109 @@
 ﻿@model IEnumerable<FitnessCenterManagement.Models.Appointment>
+@{
+    ViewData["Title"] = "Tüm Randevular";
+}
 
-<h2>Tüm Randevular</h2>
+<div class="container">
 
-<table class="table table-bordered">
-    <tr>
-        <th>Üye</th>
-        <th>Antrenör</th>
-        <th>Hizmet</th>
-        <th>Tarih</th>
-        <th>Durum</th>
-        <th></th>
-    </tr>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title">📋 Tüm Randevular</h2>
+    </div>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.UserId</td>
-            <td>@item.Trainer.FullName</td>
-            <td>@item.Service.Name</td>
-            <td>@item.AppointmentDate</td>
-            <td>
-                @if (item.IsApproved)
-                {
-                    <span class="text-success">Onaylandı</span>
-                }
-                else
-                {
-                    <span class="text-warning">Beklemede</span>
-                }
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>
-            </td>
-        </tr>
-    }
-</table>
+    <div class="card card-soft">
+        <div class="card-body p-0">
+
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">Üye</th>
+                        <th>Antrenör</th>
+                        <th>Hizmet</th>
+                        <th>Tarih</th>
+                        <th>Durum</th>
+                        <th class="text-end pe-4">İşlem</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                Henüz randevu bulunmamaktadır.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 text-muted">
+                                    @item.UserId
+                                </td>
+                                <td class="fw-semibold">
+                                    @item.Trainer.FullName
+                                </td>
+                                <td>
+                                    @item.Service.Name
+                                </td>
+                                <td>
+                                    @item.AppointmentDate.ToString("dd.MM.yyyy HH:mm")
+                                </td>
+                                <td>
+                                    @if (item.IsApproved)
+                                    {
+                                        <span class="badge bg-success">
+                                            ✔ Onaylandı
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            ⏳ Beklemede
+                                        </span>
+                                    }
+                                </td>
+                                <td class="text-end pe-4">
+
+                                    @if (!item.IsApproved)
+                                    {
+                                        <form asp-action="Approve"
+                                              asp-route-id="@item.Id"
+                                              method="post"
+                                              class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button class="btn btn-sm btn-success me-2">
+                                                ✔ Onayla
+                                            </button>
+                                        </form>
+
+                                        <form asp-action="Reject"
+                                              asp-route-id="@item.Id"
+                                              method="post"
+                                              class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                ✖ Reddet
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">
+                                            İşlem tamamlandı
+                                        </span>
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>

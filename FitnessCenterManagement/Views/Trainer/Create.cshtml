@@ -1,36 +1,95 @@
 ﻿@model FitnessCenterManagement.Models.Trainer
+@{
+    ViewData["Title"] = "Yeni Antrenör";
+}
 
-<h2>Yeni Antrenör</h2>
+<div class="container mt-4">
 
-<form asp-action="Create" method="post">
-    @Html.AntiForgeryToken()
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
 
-    <!-- Genel validation hataları -->
-    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            <div class="card shadow-lg border-0 rounded-4">
 
-    <div class="form-group">
-        <label asp-for="FullName">Ad Soyad</label>
-        <input asp-for="FullName" class="form-control" />
-        <span asp-validation-for="FullName" class="text-danger"></span>
+                <div class="card-header bg-info text-dark text-center py-3 rounded-top-4">
+                    <h4 class="mb-0">
+                        🏋️ Yeni Antrenör Ekle
+                    </h4>
+                    <small class="opacity-75">
+                        Antrenör bilgilerini ve uzmanlık alanını tanımlayın
+                    </small>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div asp-validation-summary="All"
+                                 class="alert alert-danger small"></div>
+                        }
+
+
+                        <!-- AD SOYAD -->
+                        <div class="mb-4">
+                            <label asp-for="FullName" class="form-label fw-semibold">
+                                Ad Soyad
+                            </label>
+                            <input asp-for="FullName"
+                                   class="form-control form-control-lg"
+                                   placeholder="Örn: Ceyda Yılmaz" />
+                            <span asp-validation-for="FullName"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- HİZMET / UZMANLIK -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Uzmanlık Alanı (Hizmet)
+                            </label>
+                            <select asp-for="ServiceId"
+                                    asp-items="ViewBag.Services"
+                                    class="form-select form-select-lg">
+                                <option value="">🏷️ Hizmet Seçiniz</option>
+                            </select>
+                            <span asp-validation-for="ServiceId"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- MÜSAİT SAATLER -->
+                        <div class="mb-4">
+                            <label asp-for="AvailableHours" class="form-label fw-semibold">
+                                Müsait Saatler
+                            </label>
+                            <input asp-for="AvailableHours"
+                                   class="form-control form-control-lg"
+                                   placeholder="Örn: Hafta içi 09:00 - 18:00" />
+                            <span asp-validation-for="AvailableHours"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit"
+                                    class="btn btn-success btn-lg fw-semibold">
+                                ✅ Antrenörü Kaydet
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
-    <div class="form-group mt-2">
-        <label asp-for="Specialty">Uzmanlık</label>
-        <input asp-for="Specialty" class="form-control" />
-        <span asp-validation-for="Specialty" class="text-danger"></span>
-    </div>
-
-    <div class="form-group mt-2">
-        <label asp-for="AvailableHours">Müsait Saatler</label>
-        <input asp-for="AvailableHours" class="form-control" />
-        <span asp-validation-for="AvailableHours" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-success mt-3">Kaydet</button>
-</form>
+</div>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+    

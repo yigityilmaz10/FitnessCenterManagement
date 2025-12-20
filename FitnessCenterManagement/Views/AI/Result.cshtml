@@ -1,16 +1,58 @@
 ﻿@model FitnessCenterManagement.Models.AIExerciseRequest
+@{
+    ViewData["Title"] = "AI Önerisi";
+}
 
-<h2>AI Önerisi</h2>
+<div class="container">
 
-<p><strong>Boy:</strong> @Model.Height cm</p>
-<p><strong>Kilo:</strong> @Model.Weight kg</p>
-<p><strong>Hedef:</strong> @Model.Goal</p>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
 
-<hr />
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-warning text-dark text-center fw-bold">
+                    🤖 Yapay Zekâ Egzersiz Önerisi
+                </div>
 
-<h4>Önerilen Program</h4>
-<p class="alert alert-info">
-    @ViewBag.Recommendation
-</p>
+                <div class="card-body">
 
-<a asp-action="Index" class="btn btn-primary">Yeni Öneri Al</a>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="alert alert-light text-center">
+                                <strong>Boy</strong><br />
+                                @Model.Height cm
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="alert alert-light text-center">
+                                <strong>Kilo</strong><br />
+                                @Model.Weight kg
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="alert alert-light text-center">
+                                <strong>Hedef</strong><br />
+                                @Model.Goal
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="alert alert-info text-center fs-5">
+                        <strong>Önerilen Program</strong><br /><br />
+                        @ViewBag.Recommendation
+                    </div>
+
+                </div>
+
+                <div class="card-footer text-center bg-light">
+                    <a asp-action="Index" class="btn btn-primary">
+                        🔁 Yeni Öneri Al
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

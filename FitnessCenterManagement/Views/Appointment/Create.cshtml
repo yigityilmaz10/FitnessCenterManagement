@@ -1,36 +1,143 @@
 ﻿@model FitnessCenterManagement.Models.Appointment
+@{
+    ViewData["Title"] = "Randevu Al";
+}
 
-<h2>Randevu Al</h2>
+<div class="container mt-4">
 
-<form asp-action="Create" method="post">
-    @Html.AntiForgeryToken()
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
 
-    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center py-3 rounded-top-4">
+                    <h4 class="mb-0">
+                        📅 Randevu Oluştur
+                    </h4>
+                    <small class="opacity-75">
+                        3 adımda randevunu kolayca oluştur
+                    </small>
+                </div>
 
-    <div class="form-group">
-        <label>Antrenör</label>
-        <select asp-for="TrainerId" asp-items="ViewBag.Trainers" class="form-control">
-            <option value="">Seçiniz</option>
-        </select>
+                <div class="card-body p-4">
+
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div asp-validation-summary="All"
+                                 class="alert alert-danger small"></div>
+                        }
+
+
+                        <!-- STEP 1 -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-primary me-2">1</span>
+                                <strong>Hizmet Seçimi</strong>
+                            </div>
+
+                            <select asp-for="ServiceId"
+                                    asp-items="ViewBag.Services"
+                                    class="form-select form-select-lg"
+                                    id="serviceSelect">
+                                <option value="">🏋️ Hizmet Seçiniz</option>
+                            </select>
+                            <span asp-validation-for="ServiceId"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- STEP 2 -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-primary me-2">2</span>
+                                <strong>Antrenör Seçimi</strong>
+                            </div>
+
+                            <select asp-for="TrainerId"
+                                    class="form-select form-select-lg"
+                                    id="trainerSelect"
+                                    disabled>
+                                <option>Önce hizmet seçiniz</option>
+                            </select>
+                            <span asp-validation-for="TrainerId"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- STEP 3 -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-primary me-2">3</span>
+                                <strong>Tarih & Saat</strong>
+                            </div>
+
+                            <input asp-for="AppointmentDate"
+                                   type="datetime-local"
+                                   class="form-control form-control-lg" />
+                            <span asp-validation-for="AppointmentDate"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit"
+                                    class="btn btn-success btn-lg fw-semibold">
+                                ✅ Randevuyu Oluştur
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
     </div>
 
-    <div class="form-group mt-2">
-        <label>Hizmet</label>
-        <select asp-for="ServiceId" asp-items="ViewBag.Services" class="form-control">
-            <option value="">Seçiniz</option>
-        </select>
-    </div>
-
-    <div class="form-group mt-2">
-        <label>Tarih & Saat</label>
-        <input asp-for="AppointmentDate" type="datetime-local" class="form-control" />
-    </div>
-
-    <button class="btn btn-primary mt-3">Randevu Al</button>
-</form>
+</div>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        const serviceSelect = document.getElementById("serviceSelect");
+        const trainerSelect = document.getElementById("trainerSelect");
+
+        serviceSelect.addEventListener("change", function () {
+            const serviceId = this.value;
+
+            trainerSelect.disabled = true;
+            trainerSelect.innerHTML = "<option>Yükleniyor...</option>";
+
+            if (!serviceId) {
+                trainerSelect.innerHTML = "<option>Önce hizmet seçiniz</option>";
+                return;
+            }
+
+            fetch(`/Appointment/GetTrainersByService?serviceId=${serviceId}`)
+                .then(response => response.json())
+                .then(data => {
+                    trainerSelect.innerHTML = "";
+                    trainerSelect.disabled = false;
+
+                    if (data.length === 0) {
+                        trainerSelect.innerHTML =
+                            "<option>Bu hizmeti veren antrenör yok</option>";
+                        trainerSelect.disabled = true;
+                        return;
+                    }
+
+                    trainerSelect.innerHTML =
+                        "<option value=''>👤 Antrenör Seçiniz</option>";
+
+                    data.forEach(trainer => {
+                        const option = document.createElement("option");
+                        option.value = trainer.id;
+                        option.text = trainer.fullName;
+                        trainerSelect.appendChild(option);
+                    });
+                });
+        });
+    </script>
 }

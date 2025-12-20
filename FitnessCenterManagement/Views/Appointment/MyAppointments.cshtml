@@ -1,33 +1,82 @@
 ﻿@model IEnumerable<FitnessCenterManagement.Models.Appointment>
+@{
+    ViewData["Title"] = "Randevularım";
+}
 
-<h2>Randevularım</h2>
+<div class="container">
 
-<a asp-action="Create" class="btn btn-primary mb-3">Yeni Randevu</a>
+    <!-- BAŞLIK + CTA -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title mb-0">📅 Randevularım</h2>
+            <small class="text-muted">
+                Oluşturduğun ve durumunu takip edebileceğin randevular
+            </small>
+        </div>
 
-<table class="table table-striped">
-    <tr>
-        <th>Antrenör</th>
-        <th>Hizmet</th>
-        <th>Tarih</th>
-        <th>Durum</th>
-    </tr>
+        <a asp-action="Create" class="btn btn-primary btn-lg">
+            ➕ Yeni Randevu
+        </a>
+    </div>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Trainer.FullName</td>
-            <td>@item.Service.Name</td>
-            <td>@item.AppointmentDate</td>
-            <td>
-                @if (item.IsApproved)
-                {
-                    <span class="text-success">Onaylandı</span>
-                }
-                else
-                {
-                    <span class="text-warning">Beklemede</span>
-                }
-            </td>
-        </tr>
-    }
-</table>
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">Antrenör</th>
+                        <th>Hizmet</th>
+                        <th>Tarih</th>
+                        <th>Durum</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center py-5 text-muted">
+                                📭 Henüz randevunuz bulunmamaktadır
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-semibold">
+                                    👤 @item.Trainer.FullName
+                                </td>
+                                <td>
+                                    🧾 @item.Service.Name
+                                </td>
+                                <td>
+                                    ⏰ @item.AppointmentDate.ToString("dd.MM.yyyy HH:mm")
+                                </td>
+                                <td>
+                                    @if (item.IsApproved)
+                                    {
+                                        <span class="badge bg-success fs-6">
+                                            ✔ Onaylandı
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark fs-6">
+                                            ⏳ Beklemede
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
